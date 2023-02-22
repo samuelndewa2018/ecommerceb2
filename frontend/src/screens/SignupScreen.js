@@ -20,6 +20,7 @@ export default function SignupScreen() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [checked, setChecked] = useState(false);
 
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
@@ -28,6 +29,11 @@ export default function SignupScreen() {
     setLoading(true);
     if (password !== confirmPassword) {
       toast.error("Passwords do not match");
+      setLoading(false);
+      return;
+    }
+    if (checked === false) {
+      toast.error("Please agee with our Terms and Condations");
       setLoading(false);
       return;
     }
@@ -82,6 +88,16 @@ export default function SignupScreen() {
       x.type = "password";
       y.style.display = "none";
       z.style.display = "block";
+    }
+  };
+
+  const myFunction = () => {
+    var checkBox = document.getElementById("myCheck");
+
+    if (checkBox.checked === true) {
+      setChecked(true);
+    } else {
+      setChecked(false);
     }
   };
   return (
@@ -160,6 +176,17 @@ export default function SignupScreen() {
               </div>
             </Form.Group>
           </Form.Group>
+
+          <p
+            style={{
+              fontSize: "14px",
+              color: !checked ? "red" : "rgb(239 176 113)",
+            }}
+          >
+            <input type="checkbox" id="myCheck" onClick={myFunction} /> I read
+            and agree with amazona{" "}
+            <Link to={`/terms`}>Terms and Condations </Link>
+          </p>
           <div className="mb-3">
             <Button type="submit" disabled={loading}>
               {loading ? "Signing..." : "Sign Up"}

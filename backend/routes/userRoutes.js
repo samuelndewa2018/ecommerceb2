@@ -219,7 +219,7 @@ userRouter.post(
     const sent = await sendMail({
       email: email,
       subject: `Welcome to Amazona`,
-      message: ` Hello ${name},\n Welcome to Amazona Online Shopping. \n We are happy to see you here`,
+      message: ` Hello ${name},\n Welcome to Amazona Online Shopping. \n We are happy to see you here. \nPlease note we ONLY communicate to you through threedoltscommunications@gmail.com`,
     });
     res.send({
       _id: user._id,
@@ -267,7 +267,7 @@ userRouter.post(
     const sent = await sendMail({
       email: `samuelndewa2018@gmail.com`,
       subject: `Contact Us`,
-      message: ` Hello Amazona,\n${name}, of email ${email} and number ${subject} says:\n${message}`,
+      message: `Hello Amazona,\nYou have a new contact us message.\n\nName:      ${name}\nEmail:       ${email}\nNumber:   ${subject}\nMessage:  ${message}`,
     });
     await sendMail({
       email: email,

@@ -88,14 +88,6 @@ export default function ShippingAddressScreen() {
                 required
               />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="address">
-              <Form.Label>Address</Form.Label>
-              <Form.Control
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-                required
-              />
-            </Form.Group>
             <Form.Group className="mb-3" controlId="city">
               <Form.Label>County</Form.Label>
               <Form.Select
@@ -153,6 +145,15 @@ export default function ShippingAddressScreen() {
                 <option>Nyamira</option>
               </Form.Select>
             </Form.Group>
+            <Form.Group className="mb-3" controlId="address">
+              <Form.Label>Address</Form.Label>
+              <Form.Control
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                required
+              />
+            </Form.Group>
+
             <Form.Group className="mb-3" controlId="postalCode">
               <Form.Label>Phone No.</Form.Label>
               <Form.Control

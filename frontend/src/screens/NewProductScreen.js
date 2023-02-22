@@ -1,38 +1,38 @@
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import Container from 'react-bootstrap/Container';
-import axios from 'axios';
-import { useContext, useEffect, useReducer, useRef, useState } from 'react';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Card from 'react-bootstrap/Card';
-import ListGroup from 'react-bootstrap/ListGroup';
-import Badge from 'react-bootstrap/Badge';
-import Button from 'react-bootstrap/Button';
-import Rating from '../components/Rating';
-import LoadingBox from '../components/LoadingBox';
-import MessageBox from '../components/MessageBox';
-import { Helmet } from 'react-helmet-async';
-import { getError } from '../utils';
-import { Store } from '../Store';
-import Form from 'react-bootstrap/Form';
-import FloatingLabel from 'react-bootstrap/FloatingLabel';
-import { toast } from 'react-toastify';
+import { Link, useNavigate, useParams } from "react-router-dom";
+import Container from "react-bootstrap/Container";
+import axios from "axios";
+import { useContext, useEffect, useReducer, useRef, useState } from "react";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Card from "react-bootstrap/Card";
+import ListGroup from "react-bootstrap/ListGroup";
+import Badge from "react-bootstrap/Badge";
+import Button from "react-bootstrap/Button";
+import Rating from "../components/Rating";
+import LoadingBox from "../components/LoadingBox";
+import MessageBox from "../components/MessageBox";
+import { Helmet } from "react-helmet-async";
+import { getError } from "../utils";
+import { Store } from "../Store";
+import Form from "react-bootstrap/Form";
+import FloatingLabel from "react-bootstrap/FloatingLabel";
+import { toast } from "react-toastify";
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case 'REFRESH_NEWPRODUCT':
+    case "REFRESH_NEWPRODUCT":
       return { ...state, newproduct: action.payload };
-    case 'CREATE_REQUEST':
+    case "CREATE_REQUEST":
       return { ...state, loadingCreateReview: true };
-    case 'CREATE_SUCCESS':
+    case "CREATE_SUCCESS":
       return { ...state, loadingCreateReview: false };
-    case 'CREATE_FAIL':
+    case "CREATE_FAIL":
       return { ...state, loadingCreateReview: false };
-    case 'FETCH_REQUEST':
+    case "FETCH_REQUEST":
       return { ...state, loading: true };
-    case 'FETCH_SUCCESS':
+    case "FETCH_SUCCESS":
       return { ...state, newproduct: action.payload, loading: false };
-    case 'FETCH_FAIL':
+    case "FETCH_FAIL":
       return { ...state, loading: false, error: action.payload };
     default:
       return state;
@@ -42,8 +42,8 @@ function NewProductScreen() {
   let reviewsRef = useRef();
 
   const [rating, setRating] = useState(0);
-  const [comment, setComment] = useState('');
-  const [selectedImage, setSelectedImage] = useState('');
+  const [comment, setComment] = useState("");
+  const [selectedImage, setSelectedImage] = useState("");
 
   const navigate = useNavigate();
   const params = useParams();
@@ -52,16 +52,16 @@ function NewProductScreen() {
     useReducer(reducer, {
       newproduct: [],
       loading: true,
-      error: '',
+      error: "",
     });
   useEffect(() => {
     const fetchData = async () => {
-      dispatch({ type: 'FETCH_REQUEST' });
+      dispatch({ type: "FETCH_REQUEST" });
       try {
         const result = await axios.get(`/api/newproducts/slug/${slug}`);
-        dispatch({ type: 'FETCH_SUCCESS', payload: result.data });
+        dispatch({ type: "FETCH_SUCCESS", payload: result.data });
       } catch (err) {
-        dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
+        dispatch({ type: "FETCH_FAIL", payload: getError(err) });
       }
     };
     fetchData();
@@ -75,19 +75,35 @@ function NewProductScreen() {
     const quantity = existItem ? existItem.quantity + 1 : 1;
     const { data } = await axios.get(`/api/newproducts/${newproduct._id}`);
     if (data.countInStock < quantity) {
-      window.alert('Sorry. Product is out of stock');
+      window.alert("Sorry. Product is out of stock");
       return;
     }
     ctxDispatch({
-      type: 'CART_ADD_ITEM',
+      type: "CART_ADD_ITEM",
       payload: { ...newproduct, quantity },
     });
-    navigate('/cart');
+    navigate("/cart");
+  };
+  const addToFavoritesHandler = async () => {
+    const existfavoriteItem = cart.favoriteItems.find(
+      (x) => x._id === newproduct._id
+    );
+    const quantity = existfavoriteItem ? existfavoriteItem.quantity + 1 : 1;
+    const { data } = await axios.get(`/api/products/${newproduct._id}`);
+    if (data.countInStock < quantity) {
+      window.alert("Sorry. Product is out of stock");
+      return;
+    }
+    ctxDispatch({
+      type: "FAVORITE_ADD_ITEM",
+      payload: { ...newproduct, quantity },
+    });
+    navigate("/favorite");
   };
   const submitHandler = async (e) => {
     e.preventDefault();
     if (!comment || !rating) {
-      toast.error('Please enter comment and rating');
+      toast.error("Please enter comment and rating");
       return;
     }
     try {
@@ -100,24 +116,24 @@ function NewProductScreen() {
       );
 
       dispatch({
-        type: 'CREATE_SUCCESS',
+        type: "CREATE_SUCCESS",
       });
-      toast.success('Review submitted successfully');
+      toast.success("Review submitted successfully");
       newproduct.reviews.unshift(data.review);
       newproduct.numReviews = data.numReviews;
       newproduct.rating = data.rating;
-      dispatch({ type: 'REFRESH_NEWPRODUCT', payload: newproduct });
+      dispatch({ type: "REFRESH_NEWPRODUCT", payload: newproduct });
       window.scrollTo({
-        behavior: 'smooth',
+        behavior: "smooth",
         top: reviewsRef.current.offsetTop,
       });
     } catch (error) {
       toast.error(getError(error));
-      dispatch({ type: 'CREATE_FAIL' });
+      dispatch({ type: "CREATE_FAIL" });
     }
   };
   function numberWithCommas(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
   return (
     <Container className="mt-3">
@@ -206,6 +222,16 @@ function NewProductScreen() {
                             Add to Cart
                           </Button>
                         </div>
+                        <div className="d-grid">
+                          <button
+                            className="favbutton"
+                            onClick={addToFavoritesHandler}
+                          >
+                            {" "}
+                            <p>add to favorite</p>
+                            <i class="fa fa-heart"></i>
+                          </button>
+                        </div>
                       </ListGroup.Item>
                     )}
                   </ListGroup>
@@ -271,10 +297,10 @@ function NewProductScreen() {
                 </form>
               ) : (
                 <MessageBox>
-                  Please{' '}
+                  Please{" "}
                   <Link to={`/signin?redirect=/newproduct/${newproduct.slug}`}>
                     Sign In
-                  </Link>{' '}
+                  </Link>{" "}
                   to write a review
                 </MessageBox>
               )}

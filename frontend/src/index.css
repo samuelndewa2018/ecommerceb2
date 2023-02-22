@@ -228,7 +228,154 @@ header {
 .summary-title.color3 {
   background-color: #e0e0f0;
 }
+.errorDiv {
+  color: #f00000;
+  text-align: center;
+}
+.bg-danger {
+  background-color: #f0c040 !important;
+}
 
+/* model */
+.modalBackground {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(200, 200, 200);
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modalContainer {
+  width: 500px;
+  height: 500px;
+  border-radius: 12px;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  display: flex;
+  flex-direction: column;
+  padding: 25px;
+}
+
+.modalContainer .title {
+  display: inline-block;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.titleCloseBtn {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.titleCloseBtn button {
+  background-color: transparent;
+  border: none;
+  font-size: 25px;
+  cursor: pointer;
+}
+.button {
+  background-color: #f0c040;
+  border: none;
+  font-size: 20px;
+  padding: 5px 9px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.favbutton {
+  background-color: transparent;
+  border: none;
+  margin-top: 12px;
+}
+.favbutton i {
+  color: #f0c040;
+  font-size: 40px;
+}
+.favbutton p {
+  color: #f0c040;
+  font-size: 14px;
+}
+.nav-link i {
+  font-size: 20px;
+}
+
+.modalContainer .body {
+  flex: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.7rem;
+  text-align: center;
+}
+
+.modalContainer .footer {
+  flex: 20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modalContainer .footer button {
+  width: 150px;
+  height: 45px;
+  margin: 10px;
+  border: none;
+  background-color: cornflowerblue;
+  color: white;
+  border-radius: 8px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+#cancelBtn {
+  background-color: crimson;
+}
+
+/* list style */
+ol {
+  list-style-type: none;
+  counter-reset: item;
+  margin: 0;
+  padding: 0;
+}
+
+ol > li {
+  display: table;
+  counter-increment: item;
+  margin-bottom: 0.6em;
+}
+ol > li > p {
+  font-weight: bold;
+  color: #f0c040;
+  text-decoration: underline;
+}
+
+ol > li:before {
+  content: counters(item, ".") ". ";
+  display: table-cell;
+  padding-right: 0.6em;
+}
+
+li ol > li {
+  margin: 0;
+}
+
+li ol > li:before {
+  content: counters(item, ".") " ";
+}
+.bold {
+  font-weight: bold;
+  text-align: center;
+  color: #f0c040;
+}
+.italic {
+  font-weight: bold;
+  text-decoration: underline;
+  color: #f0c040;
+}
+
+/*  */
 @media (max-width: 768px) {
   .eye {
     padding: 10px;
@@ -255,5 +402,17 @@ header {
   .h1,
   h1 {
     font-size: calc(1.375rem + 0.5vw);
+  }
+  /* .card-img,
+  .card-img-bottom,
+  .card-img-top {
+    width: 29%;
+  } */
+  .row-cols-1 > * {
+    flex: 0 0 auto;
+    width: 35%;
+  }
+  .row {
+    justify-content: center;
   }
 }

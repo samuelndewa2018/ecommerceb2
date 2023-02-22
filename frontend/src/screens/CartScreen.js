@@ -9,12 +9,13 @@ import ListGroup from "react-bootstrap/ListGroup";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import { toast } from "react-toastify";
+import { Popconfirm } from "antd";
 
 export default function CartScreen() {
   const navigate = useNavigate();
   const { state, dispatch: ctxDispatch } = useContext(Store);
+
   const {
     cart: { cartItems },
   } = state;
@@ -62,7 +63,16 @@ export default function CartScreen() {
           <Col md={8}>
             {cartItems.length === 0 ? (
               <MessageBox>
-                Your Cart <i className="fa fa-shopping-cart"></i> is empty.
+                Your Cart
+                <Link to="/">
+                  <img
+                    src="logo.png"
+                    alt="cart logo"
+                    width="100"
+                    height="100"
+                  />
+                </Link>
+                is empty.
                 {"  "}
                 <Link to="/"> Go Shopping</Link>
               </MessageBox>
@@ -103,13 +113,18 @@ export default function CartScreen() {
                       </Col>
                       <Col md={3}>Ksh.{numberWithCommas(item.price)}</Col>
                       <Col md={2}>
-                        <Button
-                          onClick={() => removeItemHandler(item)}
-                          variant="light"
+                        <Popconfirm
+                          title="Do you want to remove from Cart?"
+                          okText="Yes"
+                          cancelText="No"
+                          onConfirm={() => {
+                            removeItemHandler(item);
+                          }}
                         >
-                          {" "}
-                          <i className="fas fa-trash"></i>
-                        </Button>
+                          <Button variant="light">
+                            <i className="fas fa-trash"></i>
+                          </Button>{" "}
+                        </Popconfirm>
                       </Col>
                     </Row>
                   </ListGroup.Item>

@@ -12,6 +12,9 @@ const Contacts = () => {
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
   const [looading, setLooading] = useState(false);
+  const [sent, setSent] = useState(false);
+  const [fail, setFail] = useState(false);
+
   const submitHandler = async (e) => {
     e.preventDefault();
     if (!name || !email || !subject || !message) {
@@ -19,6 +22,7 @@ const Contacts = () => {
     } else {
       try {
         setLooading(true);
+        setSent(true);
         const { data } = await axios.post(`api/users/contacts`, {
           name,
           email,
@@ -26,11 +30,14 @@ const Contacts = () => {
           message,
         });
         setLooading(false);
+        setSent(true);
         toast.success(data.message);
         document.getElementById("myForm").reset();
         setMessage("");
       } catch (err) {
         setLooading(false);
+        setSent(false);
+        setFail(true);
         toast.error(
           err.response && err.response.data.message
             ? err.response.data.message
@@ -46,10 +53,75 @@ const Contacts = () => {
           <title>Contact Amazona</title>
         </Helmet>
         <h1 className="heading">
-          <span> contact Us</span>
+          <span> Contact Us</span>
         </h1>
 
         <div className="Contactsrow">
+          <form action="" id="myForm" onSubmit={submitHandler}>
+            <h2 className="Contactheading">Send us email</h2>
+            <input
+              type="text"
+              placeholder="Enter your name."
+              className="box"
+              name="email"
+              onChange={(e) => setName(e.target.value)}
+            />
+            <input
+              type="email"
+              placeholder="Enter your email."
+              className="box"
+              name="email"
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <input
+              type="number"
+              placeholder="Enter your number."
+              className="box"
+              name="name"
+              onChange={(e) => setSubject(e.target.value)}
+            />
+            <textarea
+              name="text"
+              className="box"
+              placeholder="Enter your message here..."
+              onChange={(e) =>
+                setMessage(
+                  e.target.value[0].toUpperCase() +
+                    e.target.value.slice(1).toLowerCase()
+                )
+              }
+              id=""
+              cols="30"
+              rows="10"
+            ></textarea>
+
+            <button
+              type="button"
+              onClick={submitHandler}
+              disabled={looading}
+              style={{
+                backgroundColor: sent
+                  ? "#09e786"
+                  : looading
+                  ? "#cef3d2"
+                  : fail
+                  ? "#fd7777"
+                  : "#f0c040",
+                color: "#000000",
+                border: "none",
+                borderRadius: "5px",
+                padding: "7px 13px",
+              }}
+            >
+              {looading
+                ? "Sending..."
+                : sent
+                ? "Message sent"
+                : fail
+                ? "Message not sent"
+                : "Send"}{" "}
+            </button>
+          </form>
           <div className="contactInfo">
             <h3 className="Contactheading">Where can you find us?</h3>
             <div className="box">
@@ -70,7 +142,8 @@ const Contacts = () => {
                 <h5>Address</h5>
                 <p>
                   Nairobi, Kenya, <br />
-                  Kahawa Sukari, Baringo Road
+                  Kahawa Sukari, Ruhan Building <br />
+                  Shop No. 20
                 </p>
               </div>
             </div>
@@ -113,7 +186,7 @@ const Contacts = () => {
                 <h5>Whatsapp</h5>
                 <p>
                   {" "}
-                  <a href="https://wa.me/+254712012113"> +254712012113</a>
+                  <a href="//wa.me/+254712012113"> +254712012113</a>
                 </p>
               </div>
             </div>
@@ -158,48 +231,6 @@ const Contacts = () => {
               </div>
             </div>
           </div>
-          <form action="" id="myForm" onSubmit={submitHandler}>
-            <h2 className="Contactheading">Send us email..</h2>
-            <input
-              type="text"
-              placeholder="Your Name..."
-              className="box"
-              name="email"
-              onChange={(e) => setName(e.target.value)}
-            />
-            <input
-              type="email"
-              placeholder="Your Email..."
-              className="box"
-              name="email"
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <input
-              type="text"
-              placeholder="Your Number..."
-              className="box"
-              name="name"
-              onChange={(e) => setSubject(e.target.value)}
-            />
-            <textarea
-              name="text"
-              className="box"
-              placeholder="Enter your message..."
-              onChange={(e) => setMessage(e.target.value)}
-              id=""
-              cols="30"
-              rows="10"
-            ></textarea>
-
-            <Button
-              type="button"
-              variant="primary"
-              onClick={submitHandler}
-              disabled={looading}
-            >
-              {looading ? "Sending..." : "Send"}{" "}
-            </Button>
-          </form>
         </div>
       </section>
     </>

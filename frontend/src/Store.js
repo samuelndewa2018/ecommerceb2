@@ -16,6 +16,9 @@ const initialState = {
     cartItems: localStorage.getItem("cartItems")
       ? JSON.parse(localStorage.getItem("cartItems"))
       : [],
+    favoriteItems: localStorage.getItem("favoriteItems")
+      ? JSON.parse(localStorage.getItem("favoriteItems"))
+      : [],
   },
 };
 function reducer(state, action) {
@@ -33,12 +36,32 @@ function reducer(state, action) {
         : [...state.cart.cartItems, newItem];
       localStorage.setItem("cartItems", JSON.stringify(cartItems));
       return { ...state, cart: { ...state.cart, cartItems } };
+    case "FAVORITE_ADD_ITEM":
+      // add to cart
+      const newfavoriteItem = action.payload;
+      const existfavoriteItem = state.cart.favoriteItems.find(
+        (item) => item._id === newfavoriteItem._id
+      );
+      const favoriteItems = existfavoriteItem
+        ? state.cart.favoriteItems.map((item) =>
+            item._id === existfavoriteItem._id ? newfavoriteItem : item
+          )
+        : [...state.cart.favoriteItems, newfavoriteItem];
+      localStorage.setItem("favoriteItems", JSON.stringify(favoriteItems));
+      return { ...state, cart: { ...state.cart, favoriteItems } };
     case "CART_REMOVE_ITEM": {
       const cartItems = state.cart.cartItems.filter(
         (item) => item._id !== action.payload._id
       );
       localStorage.setItem("cartItems", JSON.stringify(cartItems));
       return { ...state, cart: { ...state.cart, cartItems } };
+    }
+    case "FAVORITE_REMOVE_ITEM": {
+      const favoriteItems = state.cart.favoriteItems.filter(
+        (item) => item._id !== action.payload._id
+      );
+      localStorage.setItem("favoriteItems", JSON.stringify(favoriteItems));
+      return { ...state, cart: { ...state.cart, favoriteItems } };
     }
     case "CART_CLEAR":
       return { ...state, cart: { ...state.cart, cartItems: [] } };

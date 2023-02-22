@@ -10,6 +10,7 @@ import Nav from "react-bootstrap/Nav";
 import { useContext, useEffect, useState } from "react";
 import { Store } from "./Store";
 import CartScreen from "./screens/CartScreen";
+import FavoriteScreen from "./screens/FavoriteScreen";
 import Contacts from "./more/Contacts";
 import SigninScreen from "./screens/SigninScreen";
 import { toast, ToastContainer } from "react-toastify";
@@ -44,6 +45,8 @@ import MpesaOrderScreen from "./screens/MpesaOrderScreen";
 import ForgotPasswordScreen from "./screens/ForgotPasswordScreen";
 import ResetPasswordScreen from "./screens/ResetPasswordScreen";
 import UserChangePasswordScreen from "./screens/UserChangePasswordScreen";
+import Modal from "./components/Modal";
+import Terms from "./screens/Terms";
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -56,7 +59,7 @@ function App() {
     localStorage.removeItem("userInfo");
     localStorage.removeItem("shippingAddress");
     localStorage.removeItem("paymentMethod");
-    // window.location.href = "/signin";
+    window.location.href = "/";
   };
   const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
   const [categories, setCategories] = useState([]);
@@ -129,7 +132,14 @@ function App() {
                         {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
                       </Badge>
                     )}
-                    <i className="fa fa-whatsapp"></i>
+                  </Link>
+                  <Link to="/favorite" className="nav-link">
+                    <i
+                      class="fa fa-heart"
+                      style={{
+                        color: cart.favoriteItems.length > 0 ? "#f0c040" : "",
+                      }}
+                    ></i>
                   </Link>
                   {userInfo ? (
                     <NavDropdown title={userInfo.name} id="basic-nav-dropdown">
@@ -141,6 +151,9 @@ function App() {
                       </LinkContainer>
                       <LinkContainer to="/orderhistory">
                         <NavDropdown.Item>Order History</NavDropdown.Item>
+                      </LinkContainer>
+                      <LinkContainer to="/favorite">
+                        <NavDropdown.Item>My Favorites</NavDropdown.Item>
                       </LinkContainer>
                       <LinkContainer to="/contacts">
                         <NavDropdown.Item>Contact Us</NavDropdown.Item>
@@ -221,6 +234,9 @@ function App() {
             <Route path="/signup" element={<SignupScreen />} />
             <Route path="/forgot" element={<ForgotPasswordScreen />} />
             <Route path="/contacts" element={<Contacts />} />
+            <Route path="/model" element={<Modal />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/favorite" element={<FavoriteScreen />} />
             <Route
               path="/password/reset/:token"
               element={<ResetPasswordScreen />}
@@ -233,6 +249,14 @@ function App() {
                 </ProtectedRoute>
               }
             />{" "}
+            {/* <Route
+              path="/favorite"
+              element={
+                <ProtectedRoute>
+                  <FavoriteScreen />
+                </ProtectedRoute>
+              }
+            /> */}
             <Route
               path="/change/password"
               element={

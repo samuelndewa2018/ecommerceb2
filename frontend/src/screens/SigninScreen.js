@@ -17,6 +17,7 @@ export default function SigninScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [fail, setFail] = useState(false);
 
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
@@ -35,6 +36,7 @@ export default function SigninScreen() {
       navigate(redirect || "/");
     } catch (err) {
       setLoading(false);
+      setFail(true);
       toast.error(getError(err));
     }
     setLoading(false);
@@ -104,6 +106,7 @@ export default function SigninScreen() {
             </div>
           </Form.Group>
           <div className="mb-3">
+            {fail && <p className="errorDiv">Invalid email or password</p>}
             <Button type="submit" disable={loading}>
               {loading ? "Signing..." : "Sign In"}
             </Button>
@@ -115,7 +118,7 @@ export default function SigninScreen() {
             </p>
           </div>
           <div className="mb-3">
-          <p style={{ fontSize: "12px", color: "rgb(239 176 113)" }}>
+            <p style={{ fontSize: "12px", color: "rgb(239 176 113)" }}>
               New customer?{" "}
               <Link to={`/signup?redirect=${redirect}`}>
                 Create your account

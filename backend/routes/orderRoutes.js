@@ -46,17 +46,25 @@ orderRouter.post(
         .toString()
         .substring(0, 10)})
 
-      Ordered products are:
+      Ordered product(s) are:
         ${order.orderItems.map(
           (item) => `
-        ${item.quantity} ${item.name} @ Ksh. ${item.price.toFixed(2)}`
+        ${item.quantity} ${item.name} @ Ksh. ${item.price
+            .toString()
+            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`
         )}
         
-       Items Price: ksh. ${order.itemsPrice.toFixed(2)}
-       Shipping Price: ksh. ${order.shippingPrice.toFixed(2)}
-       Taxation cost: ksh. ${order.taxPrice.toFixed(2)}
+       Items Price: ksh. ${order.itemsPrice
+         .toString()
+         .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+       Shipping Price: ksh. ${order.shippingPrice
+         .toString()
+         .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+       Taxation cost: ksh. ${order.taxPrice}
 
-      Total Price: Ksh.${order.totalPrice.toFixed(2)}
+      Total Price: Ksh.${order.totalPrice
+        .toString()
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
 
       Payment Method: ${order.paymentMethod}
 
@@ -73,34 +81,45 @@ orderRouter.post(
       email: order.useremail,
       subject: `Order Confirmation`,
       message: `
-      Hi ${order.username},
-      We have finished processing your order.
-      [Order No. ${order._id.toString().replace(/\D/g, "")}] (${order.createdAt
+                   Hi ${order.username},
+                   We have finished processing your order.
+                   [Order No. ${order._id
+                     .toString()
+                     .replace(/\D/g, "")}] (${order.createdAt
         .toString()
         .substring(0, 10)})
 
-      Ordered products are:
-        ${order.orderItems.map(
-          (item) => `
-        ${item.quantity} ${item.name} @ Ksh. ${item.price.toFixed(2)}`
-        )}
-        
-       Items Price: ksh. ${order.itemsPrice.toFixed(2)}
-       Shipping Price: ksh. ${order.shippingPrice.toFixed(2)}
-       Taxation cost: ksh. ${order.taxPrice.toFixed(2)}
+                   Ordered product(s):
+                      ${order.orderItems.map(
+                        (item) => `
+                      ${item.quantity} ${item.name} @ Ksh. ${item.price
+                          .toString()
+                          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`
+                      )}
+                      
+                    Items Price: ksh. ${order.itemsPrice
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                    Shipping Price: ksh. ${order.shippingPrice
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                    (Taxation included)
+                    ________________________
+                    Total Price: Ksh.${order.totalPrice
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                    ________________________
+                    Payment Method: ${order.paymentMethod}
 
-      Total Price: Ksh.${order.totalPrice.toFixed(2)}
+                    Shipping address:
+                      ${order.shippingAddress.fullName},
+                      ${order.shippingAddress.address},      
+                      ${order.shippingAddress.city},
+                      ${order.shippingAddress.postalCode}.
 
-      Payment Method: ${order.paymentMethod}
-
-      Shipping address:
-        ${order.shippingAddress.fullName},
-        ${order.shippingAddress.address},      
-        ${order.shippingAddress.city},
-        ${order.shippingAddress.postalCode}.
-
-      Thanks for shopping with us.
-      `,
+                    Thanks for shopping with us.
+                    __________________________________________________
+                    `,
     });
     res.status(201).send({ message: "New Order Created", order });
   })
@@ -186,13 +205,19 @@ orderRouter.put(
         message: `
         Hello ${order.useremail},
 
-        Your Order has been delivered
+        Your Order has been delivered.
+        Please collect your order at selected pickup station.
+        [
+          Pickup address:
+          ${order.shippingAddress.address},      
+          ${order.shippingAddress.city},
+        ]
 
         Please rate our products.
         Click the link ${ratingUrl} to rate us.
         
         or
-        Go to your order >>
+        Go to our website/app >> order history >>
         Click on the product >> 
         Scroll down rate and comment.
 
@@ -221,9 +246,10 @@ orderRouter.put(
         email: order.useremail,
         subject: `Order Shipped`,
         message: `
-        Hello  ${order.useremail},
+        Hello  ${order.username},
 
         Your Order has been shipped.
+        This order will be delivered in the next 24 hours.
 
         Please rate our products.
         Go to your order >>
@@ -348,6 +374,7 @@ orderRouter.put(
         Scroll down rate and comment.
 
         Thanks for shopping with us.
+        Contact Us on +254712012113 for any inquires.
         `,
       });
       await sendMail({

@@ -13,7 +13,9 @@ import {
   FaInstagram,
   FaTelegram,
   FaWhatsapp,
+  FaEnvelope,
 } from "react-icons/fa";
+// import { MdAttachEmail } from "react-icons/fa";
 
 const Footer = () => {
   return (
@@ -21,12 +23,15 @@ const Footer = () => {
       <FooterWrap>
         <SocialMedia>
           <SocialMediaWrap>
-            <SocialLogo to="/">TeesPantsKicks</SocialLogo>
+            <SocialLogo to="/">Amaona</SocialLogo>
             <WebsiteRights>
-              TeesPantsKicks ©{new Date().getFullYear()} {""} All rights
-              reserved
+              Amaona ©{new Date().getFullYear()} {""} All rights reserved
             </WebsiteRights>
+
             <SocialIcons>
+              <SocialIconLink href="/contacts">
+                <FaEnvelope />
+              </SocialIconLink>
               <SocialIconLink
                 href="//www.facebook.com/+254712012113"
                 target="_blank"
