@@ -6,6 +6,7 @@ import axios from "axios";
 import { useContext } from "react";
 import { Store } from "../Store";
 import { toast } from "react-toastify";
+import Bar from "./Bar";
 
 function Product(props) {
   const navigate = useNavigate();
@@ -50,16 +51,12 @@ function Product(props) {
         </Link>
         <Rating rating={product.rating} numReviews={product.numReviews} />
         <Card.Text>
+          <div style={{ color: "#747064" }}>
+            <strike>
+              {"   "}Ksh.{numberWithCommas(product.wasprice)}
+            </strike>
+          </div>{" "}
           <strong>Ksh.{numberWithCommas(product.price)}</strong>
-        </Card.Text>
-        <Card.Text className="brandColor">
-          (
-          {product.countInStock === 0
-            ? "No product remaining"
-            : product.countInStock === 1
-            ? "1 product remaining"
-            : `${product.countInStock} products remaining`}
-          )
         </Card.Text>
         {product.countInStock === 0 ? (
           <Button variant="light" disabled>
@@ -68,6 +65,10 @@ function Product(props) {
         ) : (
           <Button onClick={() => addToCartHandler(product)}>Add to cart</Button>
         )}{" "}
+        <Bar
+          itemsLeft={product.countInStock}
+          totalItems={product.countInStock + 100} //more research needed here
+        />
       </Card.Body>
     </Card>
   );

@@ -19,6 +19,7 @@ productRouter.post(
       name: "sample name " + Date.now(),
       slug: "sample-name-" + Date.now(),
       image: "/images/p1.jpg",
+      wasprice: 4500,
       price: 0,
       category: "sample category",
       brand: "sample brand",
@@ -42,6 +43,7 @@ productRouter.put(
       product.name = req.body.name;
       product.slug = req.body.slug;
       product.price = req.body.price;
+      product.wasprice = req.body.wasprice;
       product.image = req.body.image;
       product.images = req.body.images;
       product.category = req.body.category;

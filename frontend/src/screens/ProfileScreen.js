@@ -10,6 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
+import { Popconfirm } from "antd";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -76,7 +77,7 @@ export default function ProfileScreen() {
     localStorage.removeItem("userInfo");
     localStorage.removeItem("shippingAddress");
     localStorage.removeItem("paymentMethod");
-    navigate("/");
+    window.location.href = "/";
   };
   return (
     <div className="container small-container">
@@ -132,13 +133,22 @@ export default function ProfileScreen() {
             required
           />
         </Form.Group>
-        <div className="displayFlex" onClick={signoutHandler}>
+
+        <div className="displayFlex">
           {" "}
           <i
             class="fas fa-sign-out-alt"
             style={{ padding: "5px 10px" }}
           ></i>{" "}
-          <Link to="">sign out</Link>
+          <Popconfirm
+            title="Do you want to sign out?"
+            okText="Yes"
+            cancelText="No"
+            onConfirm={signoutHandler}
+          >
+            {" "}
+            <Link to="">sign out</Link>{" "}
+          </Popconfirm>
         </div>
         <div className="displayFlex">
           {" "}

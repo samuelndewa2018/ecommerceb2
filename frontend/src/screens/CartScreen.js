@@ -114,7 +114,8 @@ export default function CartScreen() {
                       <Col md={3}>Ksh.{numberWithCommas(item.price)}</Col>
                       <Col md={2}>
                         <Popconfirm
-                          title="Do you want to remove from Cart?"
+                          title="Remove from cart"
+                          description="Do you really want to remove this item from cart?"
                           okText="Yes"
                           cancelText="No"
                           onConfirm={() => {

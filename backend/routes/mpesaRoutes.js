@@ -1,15 +1,15 @@
-import express from 'express';
-import Transaction from '../models/MpesaModel.js';
+import express from "express";
+import Transaction from "../models/MpesaModel.js";
 
 const mpesaRouter = express.Router();
 const getAccessToken = async (req, res, next) => {
   const key = process.env.MPESA_CONSUMER_KEY;
   const secret = process.env.MPESA_CONSUMER_SECRET;
-  const auth = new Buffer.from(`${key}:${secret}`).toString('base64');
+  const auth = new Buffer.from(`${key}:${secret}`).toString("base64");
 
   await axios
     .get(
-      'https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials',
+      "https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials",
       {
         headers: {
           authorization: `Basic ${auth}`,
@@ -27,35 +27,35 @@ const getAccessToken = async (req, res, next) => {
     });
 };
 //STEP 2 //stk push
-mpesaRouter.post('/stk', getAccessToken, async (req, res) => {
+mpesaRouter.post("/stk", getAccessToken, async (req, res) => {
   const phone = req.body.phone.substring(1); //formated to 72190........
   const amount = req.body.amount;
 
   const date = new Date();
   const timestamp =
     date.getFullYear() +
-    ('0' + (date.getMonth() + 1)).slice(-2) +
-    ('0' + date.getDate()).slice(-2) +
-    ('0' + date.getHours()).slice(-2) +
-    ('0' + date.getMinutes()).slice(-2) +
-    ('0' + date.getSeconds()).slice(-2);
+    ("0" + (date.getMonth() + 1)).slice(-2) +
+    ("0" + date.getDate()).slice(-2) +
+    ("0" + date.getHours()).slice(-2) +
+    ("0" + date.getMinutes()).slice(-2) +
+    ("0" + date.getSeconds()).slice(-2);
   const shortCode = process.env.MPESA_PAYBILL;
   const passkey = process.env.MPESA_PASSKEY;
 
   const callbackurl = process.env.CALLBACK_URL;
 
   const password = new Buffer.from(shortCode + passkey + timestamp).toString(
-    'base64'
+    "base64"
   );
 
   await axios
     .post(
-      'https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest',
+      "https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest",
       {
         BusinessShortCode: shortCode,
         Password: password,
         Timestamp: timestamp,
-        TransactionType: 'CustomerPayBillOnline',
+        TransactionType: "CustomerPayBillOnline",
         // Amount: amount,
         Amount: 20,
 
@@ -68,7 +68,7 @@ mpesaRouter.post('/stk', getAccessToken, async (req, res) => {
 
         CallBackURL: `${callbackurl}/${process.env.CALLBACK_ROUTE}`,
         AccountReference: 1279306645,
-        TransactionDesc: 'fortune dev',
+        TransactionDesc: "fortune dev",
       },
       {
         headers: {
@@ -92,7 +92,7 @@ const callback_route = process.env.CALLBACK_ROUTE;
 mpesaRouter.post(`/${callback_route}`, (req, res) => {
   if (!req.body.Body.stkCallback.CallbackMetadata) {
     console.log(req.body.Body.stkCallback.ResultDesc);
-    res.status(200).json('ok');
+    res.status(200).json("ok");
     return;
   }
 
@@ -118,35 +118,35 @@ mpesaRouter.post(`/${callback_route}`, (req, res) => {
   transaction
     .save()
     .then((data) => {
-      console.log({ message: 'transaction saved successfully', data });
+      console.log({ message: "transaction saved successfully", data });
     })
     .catch((err) => console.log(err.message));
 
-  res.status(200).json('ok');
+  res.status(200).json("ok");
 });
 
-mpesaRouter.post('/stkpushquery', getAccessToken, async (req, res) => {
+mpesaRouter.post("/stkpushquery", getAccessToken, async (req, res) => {
   const CheckoutRequestID = req.body.CheckoutRequestID;
 
   const date = new Date();
   const timestamp =
     date.getFullYear() +
-    ('0' + (date.getMonth() + 1)).slice(-2) +
-    ('0' + date.getDate()).slice(-2) +
-    ('0' + date.getHours()).slice(-2) +
-    ('0' + date.getMinutes()).slice(-2) +
-    ('0' + date.getSeconds()).slice(-2);
+    ("0" + (date.getMonth() + 1)).slice(-2) +
+    ("0" + date.getDate()).slice(-2) +
+    ("0" + date.getHours()).slice(-2) +
+    ("0" + date.getMinutes()).slice(-2) +
+    ("0" + date.getSeconds()).slice(-2);
   const shortCode = process.env.MPESA_PAYBILL;
   const passkey = process.env.MPESA_PASSKEY;
 
   const password = new Buffer.from(shortCode + passkey + timestamp).toString(
-    'base64'
+    "base64"
   );
 
   await axios
 
     .post(
-      'https://api.safaricom.co.ke/mpesa/stkpushquery/v1/query',
+      "https://api.safaricom.co.ke/mpesa/stkpushquery/v1/query",
       {
         BusinessShortCode: shortCode,
         Password: password,
@@ -168,7 +168,7 @@ mpesaRouter.post('/stkpushquery', getAccessToken, async (req, res) => {
     });
 });
 
-mpesaRouter.get('/transactions', (req, res) => {
+mpesaRouter.get("/transactions", (req, res) => {
   Transaction.find({})
     .sort({ createdAt: -1 })
     .exec(function (err, data) {
