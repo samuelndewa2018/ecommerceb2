@@ -52,7 +52,7 @@ function NewProduct(props) {
         <Card.Text>
           <div style={{ color: "#747064" }}>
             <strike>
-              {"   "}Ksh.{numberWithCommas(newproduct.wasprice)}
+              {"   "} was Ksh. {numberWithCommas(newproduct.wasprice)}
             </strike>
           </div>{" "}
           <strong>Ksh.{numberWithCommas(newproduct.price)}</strong>
@@ -68,7 +68,7 @@ function NewProduct(props) {
         )}
         <Bar
           itemsLeft={newproduct.countInStock}
-          totalItems={newproduct.countInStock + 100} //more research needed here
+          totalItems={newproduct.originStock}
         />
       </Card.Body>
     </Card>

@@ -74,11 +74,15 @@ export default function FavoriteScreen() {
                         </Button>{" "}
                       </Popconfirm>
                     </Col>
-                    <Col>
-                      {" "}
-                      <button className="button">
-                        <Link to={`/product/${item.slug}`}>Buy Now</Link>
-                      </button>
+                    <Col md={2}>
+                      <MessageBox variant="primary" style={{ margin: "0px" }}>
+                        <Link
+                          to={`/product/${item.slug}`}
+                          className="linkStyles"
+                        >
+                          Buy Now{" "}
+                        </Link>
+                      </MessageBox>
                     </Col>
                   </Row>
                 </ListGroup.Item>

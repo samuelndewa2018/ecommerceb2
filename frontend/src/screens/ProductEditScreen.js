@@ -63,6 +63,7 @@ export default function ProductEditScreen() {
   const [images, setImages] = useState([]);
   const [category, setCategory] = useState("");
   const [countInStock, setCountInStock] = useState("");
+  const [originStock, setoriginStock] = useState("");
   const [brand, setBrand] = useState("");
   const [description, setDescription] = useState("");
 
@@ -79,6 +80,7 @@ export default function ProductEditScreen() {
         setImages(data.images);
         setCategory(data.category);
         setCountInStock(data.countInStock);
+        setoriginStock(data.originStock);
         setBrand(data.brand);
         setDescription(data.description);
         dispatch({ type: "FETCH_SUCCESS" });
@@ -108,6 +110,7 @@ export default function ProductEditScreen() {
           category,
           brand,
           countInStock,
+          originStock,
           description,
         },
         {
@@ -262,6 +265,14 @@ export default function ProductEditScreen() {
               <Form.Control
                 value={countInStock}
                 onChange={(e) => setCountInStock(e.target.value)}
+                required
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="countInStock">
+              <Form.Label>Origin Stock</Form.Label>
+              <Form.Control
+                value={originStock}
+                onChange={(e) => setoriginStock(e.target.value)}
                 required
               />
             </Form.Group>

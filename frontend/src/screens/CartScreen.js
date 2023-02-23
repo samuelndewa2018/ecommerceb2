@@ -21,22 +21,18 @@ export default function CartScreen() {
   } = state;
 
   const updateCartHandler = async (item, quantity) => {
-    if (item.quantity === 2) {
-      toast.error("You have reached manimum stock");
-    }
     ctxDispatch({
       type: "CART_ADD_ITEM",
       payload: { ...item, quantity },
     });
+    toast.success("Quantity redused");
   };
   const updateCartHandler2 = async (item, quantity) => {
-    if (item.quantity === item.countInStock - 1) {
-      toast.error("You have reached maximum stock");
-    }
     ctxDispatch({
       type: "CART_ADD_ITEM",
       payload: { ...item, quantity },
     });
+    toast.success("Quantity increased");
   };
   const removeItemHandler = (item) => {
     ctxDispatch({ type: "CART_REMOVE_ITEM", payload: item });

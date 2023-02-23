@@ -82,6 +82,12 @@ function ProductScreen() {
       type: "CART_ADD_ITEM",
       payload: { ...product, quantity },
     });
+    if (existItem) {
+      toast.success("Product Quantity increased");
+    }
+    if (!existItem) {
+      toast.success("Product added in cart");
+    }
     navigate("/cart");
   };
 

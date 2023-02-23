@@ -17,7 +17,7 @@ const ItemsLeftBar = ({ itemsLeft, totalItems }) => {
         style={{
           width: `${barWidth}%`,
           height: "100%",
-          backgroundColor: barWidth < 25 ? "red" : "green",
+          backgroundColor: itemsLeft < 15 ? "red" : "green",
           borderRadius: "5px",
         }}
       ></div>

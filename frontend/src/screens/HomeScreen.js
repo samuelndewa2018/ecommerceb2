@@ -100,7 +100,12 @@ function HomeScreen() {
       <Helmet>
         <title>Amazona</title>
       </Helmet>
-      {!loading && <h2>Featured Products</h2>}
+      {!loading && (
+        <h2 className="h2Producttittle">
+          <i class="fa fa-bolt" aria-hidden="true"></i>
+          Featured Products
+        </h2>
+      )}
       <div className="products">
         {loading ? (
           <LoadingBox />
@@ -133,7 +138,12 @@ function HomeScreen() {
           </div>
         )}
       </div>
-      {!loading && <h2>New Products</h2>}
+      {!loading && (
+        <h2 className="h2Producttittle">
+          <i class="fa fa-rocket" aria-hidden="true"></i>
+          New Products
+        </h2>
+      )}
       <div className="products">
         {loading ? (
           ""
@@ -172,7 +182,12 @@ function HomeScreen() {
           </div>
         )}
       </div>
-      {!loading && <h2>Offer Products</h2>}
+      {!loading && (
+        <h2 className="h2Producttittle">
+          <i class="fa fa-hourglass-start" aria-hidden="true"></i>
+          Offer Products
+        </h2>
+      )}
       <div className="products">
         {loading ? (
           ""
