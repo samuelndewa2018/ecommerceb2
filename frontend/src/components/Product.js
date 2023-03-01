@@ -49,14 +49,14 @@ function Product(props) {
             className="card-img-top productImg"
             alt={product.name}
           />
-          <span className="discount-badge">-{discount}%</span>
+          <span className="discount-badge">{discount}% off</span>
         </Link>
         <Link className="linkStyles2" to={`/product/${product.slug}`}>
           <Card.Title>{product.name}</Card.Title>
         </Link>
         <Rating rating={product.rating} numReviews={product.numReviews} />
         <Card.Text>
-          <div style={{ color: "#747064" }}>
+          <div style={{ color: "#747064", fontSize:"12px"}}>
             <strike>
               {"   "} was Ksh. {numberWithCommas(product.wasprice)}
             </strike>

@@ -35,15 +35,19 @@ function NewProduct(props) {
   function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
+  const discount = Math.round(
+    ((newproduct.wasprice - newproduct.price) / newproduct.wasprice) * 100
+  );
   return (
     <Card className="ProductCard">
       <Card.Body>
-        <Link to={`/newproduct/${newproduct.slug}`} className="productImg">
+        <Link to={`/newproduct/${newproduct.slug}`} className="productImg2">
           <img
             src={newproduct.image}
             className="card-img-top productImg"
             alt={newproduct.name}
           />
+          <span className="discount-badge">{discount}% off</span>
         </Link>
         <Link className="linkStyles2" to={`/newproduct/${newproduct.slug}`}>
           <Card.Title>{newproduct.name}</Card.Title>
